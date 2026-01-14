@@ -24,12 +24,12 @@ const Index = () => {
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
 
   // AI Generation
-  const handleGenerate = async (prompt: string) => {
+  const handleGenerate = async (prompt: string, model: string) => {
     setIsLoading(true);
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-website", {
-        body: { prompt },
+        body: { prompt, model },
       });
 
       if (error) {
