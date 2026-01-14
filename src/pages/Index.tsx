@@ -106,7 +106,7 @@ const Index = () => {
     );
   };
 
-  // Merge/Fusion Function
+  // Merge/Fusion Function - Verbessert für komplette Dateien
   const handleMergeFiles = () => {
     if (files.length < 2) {
       toast.error("Mindestens 2 Dateien zum Fusionieren benötigt");
@@ -118,32 +118,109 @@ const Index = () => {
     const cssFiles = files.filter((f) => f.name.endsWith(".css"));
     const jsFiles = files.filter((f) => f.name.endsWith(".js"));
 
+    // Extract all embedded styles from HTML files
+    const extractStyles = (html: string): string => {
+      const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) || [];
+      return styleMatches.map(s => s.replace(/<\/?style[^>]*>/gi, '')).join('\n');
+    };
+
+    // Extract all embedded scripts from HTML files
+    const extractScripts = (html: string): string => {
+      const scriptMatches = html.match(/<script[^>]*>([\s\S]*?)<\/script>/gi) || [];
+      return scriptMatches
+        .filter(s => !s.includes('src=')) // Only inline scripts
+        .map(s => s.replace(/<\/?script[^>]*>/gi, ''))
+        .join('\n');
+    };
+
+    // Extract head content (meta, links, etc.)
+    const extractHeadContent = (html: string): string => {
+      const headMatch = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+      if (!headMatch) return '';
+      // Remove style and script tags, keep other stuff
+      return headMatch[1]
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<title[^>]*>[\s\S]*?<\/title>/gi, '')
+        .replace(/<meta\s+charset[^>]*>/gi, '')
+        .replace(/<meta\s+name="viewport"[^>]*>/gi, '')
+        .trim();
+    };
+
+    // Extract body content
+    const extractBodyContent = (html: string): string => {
+      const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      if (bodyMatch) {
+        // Remove script tags from body content, they go to the end
+        return bodyMatch[1].replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '').trim();
+      }
+      // If no body tag, check if it's a fragment (no html structure)
+      if (!html.includes('<html') && !html.includes('<head')) {
+        return html;
+      }
+      return '';
+    };
+
+    // Collect all styles
+    const allStyles: string[] = [];
+    cssFiles.forEach(f => {
+      allStyles.push(`/* === ${f.name} === */\n${f.content}`);
+    });
+    htmlFiles.forEach(f => {
+      const embedded = extractStyles(f.content);
+      if (embedded.trim()) {
+        allStyles.push(`/* === Eingebettet aus ${f.name} === */\n${embedded}`);
+      }
+    });
+
+    // Collect all scripts
+    const allScripts: string[] = [];
+    jsFiles.forEach(f => {
+      allScripts.push(`// === ${f.name} ===\n${f.content}`);
+    });
+    htmlFiles.forEach(f => {
+      const embedded = extractScripts(f.content);
+      if (embedded.trim()) {
+        allScripts.push(`// === Eingebettet aus ${f.name} ===\n${embedded}`);
+      }
+    });
+
+    // Collect head content
+    const headContents = htmlFiles
+      .map(f => extractHeadContent(f.content))
+      .filter(Boolean)
+      .join('\n');
+
+    // Collect body content
+    const bodyContents = htmlFiles
+      .map((f, idx) => {
+        const content = extractBodyContent(f.content);
+        if (!content.trim()) return '';
+        return `  <!-- ===== ${f.name} ===== -->\n  <section class="fusion-section fusion-section-${idx + 1}" data-source="${f.name}">\n    ${content}\n  </section>`;
+      })
+      .filter(Boolean)
+      .join('\n\n');
+
     // Build merged HTML
-    let mergedHtml = `<!DOCTYPE html>
+    const mergedHtml = `<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fusionierte Webseite</title>
+${headContents ? `  <!-- Zusätzliche Head-Elemente -->\n${headContents}` : ''}
   <style>
-    /* === FUSIONIERTES CSS === */
-${cssFiles.map((f) => `    /* --- ${f.name} --- */\n${f.content}`).join("\n\n")}
+    /* === FUSIONIERTE STYLES === */
+    .fusion-section { margin: 0; }
+${allStyles.join('\n\n')}
   </style>
 </head>
 <body>
-  <!-- === FUSIONIERTER HTML INHALT === -->
-${htmlFiles
-  .map((f) => {
-    // Extract body content if full HTML, otherwise use as-is
-    const bodyMatch = f.content.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-    const content = bodyMatch ? bodyMatch[1] : f.content;
-    return `  <!-- --- ${f.name} --- -->\n  <section class="merged-section">\n${content}\n  </section>`;
-  })
-  .join("\n\n")}
+${bodyContents || '  <!-- Keine HTML-Inhalte gefunden -->'}
 
   <script>
-    /* === FUSIONIERTES JAVASCRIPT === */
-${jsFiles.map((f) => `    // --- ${f.name} ---\n${f.content}`).join("\n\n")}
+    /* === FUSIONIERTE SCRIPTS === */
+${allScripts.join('\n\n') || '    // Keine Scripts'}
   </script>
 </body>
 </html>`;
@@ -158,7 +235,7 @@ ${jsFiles.map((f) => `    // --- ${f.name} ---\n${f.content}`).join("\n\n")}
     setFiles((prev) => [...prev, mergedFile]);
     setSelectedFile(mergedFile);
     setActiveTab("preview");
-    toast.success(`${files.length} Dateien fusioniert!`);
+    toast.success(`${files.length} Dateien vollständig fusioniert!`);
   };
 
   // Download & Open
