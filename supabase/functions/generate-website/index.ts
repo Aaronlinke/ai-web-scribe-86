@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, language = "de" } = await req.json();
+    const { prompt, model = "google/gemini-3-flash-preview" } = await req.json();
     
     if (!prompt || prompt.trim().length === 0) {
       return new Response(
@@ -52,7 +52,7 @@ Beginne direkt mit <!DOCTYPE html> - nichts anderes.`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: model,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: `Erstelle eine Webseite basierend auf dieser Beschreibung: ${prompt}` },
