@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Code2, Eye, Zap, Download, ExternalLink, AlertTriangle, FolderOpen, Sparkles } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Code2, Eye, Zap, Download, ExternalLink, AlertTriangle, FolderOpen, Sparkles, Blocks } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PromptInput from "@/components/PromptInput";
@@ -7,12 +7,14 @@ import PreviewFrame from "@/components/PreviewFrame";
 import CodeEditor from "@/components/CodeEditor";
 import FileManager, { FileItem, FolderItem } from "@/components/FileManager";
 import MultiFileUpload from "@/components/MultiFileUpload";
+import VisualBuilder from "@/components/VisualBuilder";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("preview");
+  const [leftTab, setLeftTab] = useState("generate");
   const [isLoading, setIsLoading] = useState(false);
   
   // File Management State
@@ -105,6 +107,18 @@ const Index = () => {
       prev.map((f) => (f.id === folderId ? { ...f, isExpanded: !f.isExpanded } : f))
     );
   };
+
+  const handleBuilderExport = useCallback((html: string, name: string) => {
+    const newFile: FileItem = {
+      id: `builder-${Date.now()}`,
+      name,
+      content: html,
+      folderId: "generated",
+    };
+    setFiles((prev) => [...prev, newFile]);
+    setSelectedFile(newFile);
+    setActiveTab("preview");
+  }, []);
 
   // ===== INTELLIGENTE FUSION - Nimmt das Beste aus allen Systemen =====
   const handleMergeFiles = () => {
@@ -533,10 +547,14 @@ ${optimizedJS}
         <div className="w-full lg:w-[400px] flex-shrink-0 space-y-4">
           {/* Main Tabs */}
           <Tabs defaultValue="generate" className="w-full">
-            <TabsList className="w-full grid grid-cols-3 bg-card border border-border h-10">
+            <TabsList className="w-full grid grid-cols-4 bg-card border border-border h-10">
               <TabsTrigger value="generate" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Sparkles className="w-3 h-3" />
                 KI
+              </TabsTrigger>
+              <TabsTrigger value="builder" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Blocks className="w-3 h-3" />
+                Builder
               </TabsTrigger>
               <TabsTrigger value="upload" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <FolderOpen className="w-3 h-3" />
@@ -557,6 +575,16 @@ ${optimizedJS}
                   </div>
                   <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
                 </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="builder" className="mt-3">
+              <div className="bg-card rounded-lg border border-border p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Blocks className="w-4 h-4 text-primary" />
+                  <h2 className="text-sm font-semibold text-foreground">Visual Builder</h2>
+                </div>
+                <VisualBuilder onExportHTML={handleBuilderExport} />
               </div>
             </TabsContent>
 
