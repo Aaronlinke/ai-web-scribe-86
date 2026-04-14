@@ -77,7 +77,7 @@ Beginne direkt mit <!DOCTYPE html> - nichts anderes.`;
         model: model,
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: `Erstelle eine Webseite basierend auf dieser Beschreibung: ${prompt}` },
+          { role: "user", content: `ULTRA MODUS AKTIV. Erstelle eine erstklassige Webseite basierend auf dieser Beschreibung. Gib alles – keine halben Sachen: ${prompt}` },
         ],
         temperature: 0.7,
         max_tokens: 4000,
