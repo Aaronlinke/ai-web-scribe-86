@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
-import { Download, RotateCcw, Eye } from "lucide-react";
+import { Download, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import ComponentPalette, { type BuilderComponent } from "./builder/ComponentPalette";
 import BuilderCanvas from "./builder/BuilderCanvas";
@@ -63,7 +62,6 @@ const VisualBuilder = ({ onExportHTML }: VisualBuilderProps) => {
     toast.info("Builder zurückgesetzt");
   };
 
-  // Generate clean HTML export
   const generateHTML = (): string => {
     const spacingMap = { compact: "1rem", normal: "2rem", spacious: "3.5rem" };
     const pad = spacingMap[styles.spacing];
@@ -81,16 +79,64 @@ const VisualBuilder = ({ onExportHTML }: VisualBuilderProps) => {
   <p style="opacity:0.8;margin-bottom:1.5rem;">${c.defaultContent.subheading}</p>
   <a href="#" style="display:inline-block;padding:0.75rem 2rem;background:rgba(255,255,255,0.2);border-radius:0.5rem;color:#fff;text-decoration:none;font-weight:600;">${c.defaultContent.cta}</a>
 </section>`;
+        case "cta-banner":
+          return `<section style="background:linear-gradient(135deg,${styles.primaryColor},${styles.secondaryColor});color:#fff;padding:${pad};text-align:center;padding-top:3rem;padding-bottom:3rem;">
+  <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">${c.defaultContent.heading}</h2>
+  <p style="opacity:0.8;margin-bottom:1.5rem;">${c.defaultContent.subheading}</p>
+  <a href="#" style="display:inline-block;padding:0.75rem 2rem;background:rgba(255,255,255,0.2);border-radius:0.5rem;color:#fff;text-decoration:none;font-weight:600;">${c.defaultContent.cta}</a>
+</section>`;
+        case "divider":
+          return `<div style="padding:0.5rem ${pad};"><hr style="border:none;height:2px;background:linear-gradient(90deg,transparent,${styles.primaryColor},transparent);" /></div>`;
         case "text-block":
           return `<section style="padding:${pad};color:${styles.textColor};">
   <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">${c.defaultContent.heading}</h2>
   <p style="line-height:1.6;opacity:0.8;">${c.defaultContent.text}</p>
 </section>`;
         case "feature-cards":
-          return `<section style="padding:${pad};display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+          return `<section style="padding:${pad};display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
 ${["card1", "card2", "card3"].map((k) => `  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:1.5rem;text-align:center;">
     <div style="font-size:1.5rem;margin-bottom:0.5rem;">⭐</div>
     <p style="font-weight:500;">${c.defaultContent[k]}</p>
+  </div>`).join("\n")}
+</section>`;
+        case "stats":
+          return `<section style="padding:${pad};display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center;">
+${["1", "2", "3"].map((n) => `  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:1.5rem;">
+    <div style="font-size:2rem;font-weight:800;color:${styles.primaryColor};">${c.defaultContent[`stat${n}`]}</div>
+    <div style="font-size:0.875rem;opacity:0.6;">${c.defaultContent[`label${n}`]}</div>
+  </div>`).join("\n")}
+</section>`;
+        case "pricing":
+          return `<section style="padding:${pad};display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+${["1", "2", "3"].map((n) => `  <div style="border:${n === "2" ? `2px solid ${styles.primaryColor}` : "1px solid #e2e8f0"};border-radius:0.75rem;padding:2rem;text-align:center;${n === "2" ? `background:${styles.primaryColor}08;transform:scale(1.02);` : "background:#f8fafc;"}">
+    <h3 style="font-weight:700;margin-bottom:0.5rem;">${c.defaultContent[`plan${n}`]}</h3>
+    <div style="font-size:2rem;font-weight:800;color:${styles.primaryColor};margin-bottom:0.25rem;">${c.defaultContent[`price${n}`]}</div>
+    <div style="font-size:0.75rem;opacity:0.5;margin-bottom:1rem;">/Monat</div>
+    <a href="#" style="display:block;padding:0.5rem;background:${styles.primaryColor};color:#fff;border-radius:0.5rem;text-decoration:none;font-weight:600;">Wählen</a>
+  </div>`).join("\n")}
+</section>`;
+        case "faq":
+          return `<section style="padding:${pad};color:${styles.textColor};">
+  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;">Häufige Fragen</h2>
+${["1", "2", "3"].map((n) => `  <details style="margin-bottom:0.5rem;border:1px solid #e2e8f0;border-radius:0.5rem;padding:1rem;">
+    <summary style="font-weight:600;cursor:pointer;">${c.defaultContent[`q${n}`]}</summary>
+    <p style="margin-top:0.5rem;opacity:0.7;">${c.defaultContent[`a${n}`]}</p>
+  </details>`).join("\n")}
+</section>`;
+        case "team":
+          return `<section style="padding:${pad};display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center;">
+${["1", "2", "3"].map((n) => `  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:1.5rem;">
+    <div style="width:60px;height:60px;border-radius:50%;background:${styles.primaryColor}20;margin:0 auto 0.75rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">👤</div>
+    <h3 style="font-weight:700;margin-bottom:0.25rem;">${c.defaultContent[`member${n}`]}</h3>
+    <p style="font-size:0.75rem;opacity:0.6;">${c.defaultContent[`role${n}`]}</p>
+  </div>`).join("\n")}
+</section>`;
+        case "timeline":
+          return `<section style="padding:${pad};display:flex;gap:2rem;justify-content:center;align-items:flex-start;">
+${["1", "2", "3"].map((n) => `  <div style="flex:1;text-align:center;">
+    <div style="width:2.5rem;height:2.5rem;border-radius:50%;background:${styles.primaryColor};color:#fff;margin:0 auto 0.75rem;display:flex;align-items:center;justify-content:center;font-weight:700;">${n}</div>
+    <h3 style="font-weight:700;margin-bottom:0.25rem;">${c.defaultContent[`step${n}`]}</h3>
+    <p style="font-size:0.75rem;opacity:0.6;">${c.defaultContent[`desc${n}`]}</p>
   </div>`).join("\n")}
 </section>`;
         case "testimonial":
@@ -142,6 +188,12 @@ ${(c.defaultContent.fields || "").split(",").map((f) => `    <input type="text" 
     body { font-family: ${styles.fontFamily}; background: ${styles.bgColor}; color: ${styles.textColor}; }
     img { max-width: 100%; }
     a { color: inherit; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::marker { display: none; }
+    @media (max-width: 768px) {
+      [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+    }
   </style>
 </head>
 <body>
@@ -163,7 +215,6 @@ ${components.map(renderComp).join("\n\n")}
 
   return (
     <div className="space-y-3">
-      {/* Toolbar */}
       <div className="flex items-center gap-2">
         <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs" onClick={resetAll}>
           <RotateCcw className="w-3 h-3" />
@@ -175,15 +226,12 @@ ${components.map(renderComp).join("\n\n")}
         </Button>
       </div>
 
-      {/* Component Palette */}
       <ComponentPalette onAddComponent={addComponent} />
 
-      {/* Style Panel */}
       <div className="border-t border-border pt-3">
         <StylePanel styles={styles} onStyleChange={setStyles} />
       </div>
 
-      {/* Mini Preview Info */}
       <div className="text-[10px] text-muted-foreground text-center pt-1">
         {components.length} Komponente{components.length !== 1 ? "n" : ""} • Vorschau rechts
       </div>
