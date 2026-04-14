@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, model = "google/gemini-3-flash-preview" } = await req.json();
+    const { prompt, model = "google/gemini-3-flash-preview", mode = "generate", existingCode = "" } = await req.json();
     
     if (!prompt || prompt.trim().length === 0) {
       return new Response(
