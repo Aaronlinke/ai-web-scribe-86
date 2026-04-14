@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, model = "google/gemini-3-flash-preview" } = await req.json();
+    const { prompt, model = "google/gemini-3-flash-preview", mode = "generate", existingCode = "" } = await req.json();
     
     if (!prompt || prompt.trim().length === 0) {
       return new Response(
@@ -25,7 +25,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `Du bist ein ELITE-Webentwickler im ULTRA MODUS. Du arbeitest auf höchstem Niveau – kein Durchschnitt, kein Standard-Kram. Du bist ehrgeizig, kreativ und kompromisslos in der Qualität.
+    const baseSystemPrompt = `Du bist ein ELITE-Webentwickler im ULTRA MODUS. Du arbeitest auf höchstem Niveau – kein Durchschnitt, kein Standard-Kram. Du bist ehrgeizig, kreativ und kompromisslos in der Qualität.
 
 ⚠️ HINWEIS: Dieses Tool dient ausschließlich zu Lern- und Studienzwecken.
 
@@ -67,6 +67,26 @@ Am Ende des HTML-Codes füge einen versteckten Kommentar ein:
 
 Beginne direkt mit <!DOCTYPE html> - nichts anderes.`;
 
+    let userMessage: string;
+    let systemPrompt = baseSystemPrompt;
+
+    if (mode === "refine" && existingCode) {
+      systemPrompt += `
+
+VERBESSERUNGS-MODUS:
+Du erhältst existierenden Code. Deine Aufgabe:
+1. Analysiere den Code kritisch
+2. Verbessere ALLES: Design, Animationen, Code-Qualität, Performance, UX
+3. Füge fehlende Features hinzu die sinnvoll wären
+4. Mache das Design 10x besser – mehr Tiefe, mehr Finesse
+5. Behalte die Grundstruktur, aber upgrade alles auf Elite-Niveau
+6. Gib die KOMPLETTE verbesserte HTML-Datei zurück`;
+
+      userMessage = `ULTRA VERBESSERUNGS-MODUS. Hier ist der existierende Code. Verbessere ihn radikal – mach ihn 10x besser. Nutzeranweisung: "${prompt}"\n\nExistierender Code:\n${existingCode}`;
+    } else {
+      userMessage = `ULTRA MODUS AKTIV. Erstelle eine erstklassige Webseite basierend auf dieser Beschreibung. Gib alles – keine halben Sachen: ${prompt}`;
+    }
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -77,10 +97,10 @@ Beginne direkt mit <!DOCTYPE html> - nichts anderes.`;
         model: model,
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: `ULTRA MODUS AKTIV. Erstelle eine erstklassige Webseite basierend auf dieser Beschreibung. Gib alles – keine halben Sachen: ${prompt}` },
+          { role: "user", content: userMessage },
         ],
         temperature: 0.7,
-        max_tokens: 4000,
+        max_tokens: 8000,
       }),
     });
 
@@ -116,15 +136,25 @@ Beginne direkt mit <!DOCTYPE html> - nichts anderes.`;
 
     // Validate that it starts with DOCTYPE or html
     if (!generatedCode.toLowerCase().startsWith("<!doctype") && !generatedCode.toLowerCase().startsWith("<html")) {
-      // Try to extract HTML from the response
       const htmlMatch = generatedCode.match(/<!DOCTYPE html[\s\S]*<\/html>/i);
       if (htmlMatch) {
         generatedCode = htmlMatch[0];
       }
     }
 
+    // Extract feedback from HTML comments
+    let feedback = null;
+    const feedbackMatch = generatedCode.match(/<!-- ULTRA-FEEDBACK:([\s\S]*?)-->/);
+    if (feedbackMatch) {
+      const raw = feedbackMatch[1].trim();
+      const strengths = raw.match(/🔥 Stärken:\s*(.*?)(?=💡|🚀|$)/s)?.[1]?.trim() || "";
+      const improvements = raw.match(/💡 Verbesserungen:\s*(.*?)(?=🚀|$)/s)?.[1]?.trim() || "";
+      const nextLevel = raw.match(/🚀 Nächste Stufe:\s*(.*?)$/s)?.[1]?.trim() || "";
+      feedback = { strengths, improvements, nextLevel };
+    }
+
     return new Response(
-      JSON.stringify({ code: generatedCode }),
+      JSON.stringify({ code: generatedCode, feedback }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
