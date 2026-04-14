@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { 
-  Layout, Type, Image, FormInput, Navigation, 
-  ChevronDown, GripVertical, Star, Mail, 
-  Columns, FileText, Quote, MapPin
+  Layout, Type, Image, FormInput, 
+  ChevronDown, GripVertical, 
+  DollarSign, BarChart2, Megaphone, HelpCircle, Minus, Users, Clock
 } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -21,6 +21,8 @@ const componentCategories = [
     components: [
       { type: "header", label: "Header + Navigation", defaultContent: { title: "Mein Unternehmen", links: "Home, Über uns, Kontakt" } },
       { type: "hero", label: "Hero Section", defaultContent: { heading: "Willkommen", subheading: "Deine Beschreibung hier", cta: "Mehr erfahren" } },
+      { type: "cta-banner", label: "CTA Banner", defaultContent: { heading: "Bereit loszulegen?", subheading: "Starte jetzt dein Projekt", cta: "Jetzt starten" } },
+      { type: "divider", label: "Trennlinie", defaultContent: { style: "gradient" } },
       { type: "footer", label: "Footer", defaultContent: { text: "© 2026 Unternehmen. Alle Rechte vorbehalten.", links: "Impressum, Datenschutz" } },
     ],
   },
@@ -31,6 +33,9 @@ const componentCategories = [
       { type: "text-block", label: "Textblock", defaultContent: { heading: "Überschrift", text: "Hier kommt dein Text. Klicke zum Bearbeiten." } },
       { type: "feature-cards", label: "Feature Cards (3er)", defaultContent: { card1: "Feature 1", card2: "Feature 2", card3: "Feature 3" } },
       { type: "testimonial", label: "Testimonial", defaultContent: { quote: "Ein tolles Produkt!", author: "Max Mustermann" } },
+      { type: "stats", label: "Statistik-Counter", defaultContent: { stat1: "500+", label1: "Kunden", stat2: "99%", label2: "Zufriedenheit", stat3: "24/7", label3: "Support" } },
+      { type: "faq", label: "FAQ Bereich", defaultContent: { q1: "Was ist das?", a1: "Eine tolle Lösung.", q2: "Wie funktioniert es?", a2: "Ganz einfach und intuitiv.", q3: "Was kostet es?", a3: "Verschiedene Pläne verfügbar." } },
+      { type: "team", label: "Team-Sektion", defaultContent: { member1: "Max Müller", role1: "CEO", member2: "Lisa Schmidt", role2: "CTO", member3: "Tom Weber", role3: "Designer" } },
     ],
   },
   {
@@ -42,11 +47,13 @@ const componentCategories = [
     ],
   },
   {
-    name: "Formulare",
-    icon: FormInput,
+    name: "Business",
+    icon: DollarSign,
     components: [
+      { type: "pricing", label: "Pricing-Tabelle", defaultContent: { plan1: "Basic", price1: "9€", plan2: "Pro", price2: "29€", plan3: "Enterprise", price3: "99€" } },
       { type: "contact-form", label: "Kontaktformular", defaultContent: { fields: "Name, E-Mail, Nachricht", button: "Absenden" } },
       { type: "newsletter", label: "Newsletter Signup", defaultContent: { heading: "Newsletter abonnieren", placeholder: "Deine E-Mail" } },
+      { type: "timeline", label: "Timeline / Prozess", defaultContent: { step1: "Anfrage", desc1: "Kontaktiere uns", step2: "Beratung", desc2: "Wir planen zusammen", step3: "Umsetzung", desc3: "Dein Projekt wird real" } },
     ],
   },
 ];

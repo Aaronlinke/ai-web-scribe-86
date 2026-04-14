@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Trash2, GripVertical, ChevronUp, ChevronDown, Pencil } from "lucide-react";
+import { Trash2, ChevronUp, ChevronDown, Pencil } from "lucide-react";
 import type { BuilderComponent } from "./ComponentPalette";
 import type { BuilderStyles } from "./StylePanel";
 import { Button } from "@/components/ui/button";
@@ -107,6 +107,87 @@ const BuilderCanvas = ({ components, styles, onRemove, onMoveUp, onMoveDown, onU
             <div className="text-2xl mb-2">💬</div>
             {editableText("quote", "p", "text-sm italic mb-2")}
             {editableText("author", "span", "text-xs font-semibold opacity-60")}
+          </div>
+        );
+      case "stats":
+        return (
+          <div style={baseStyle} className="grid grid-cols-3 gap-3 rounded text-center">
+            {["1", "2", "3"].map((n) => (
+              <div key={n} className="bg-secondary/20 border border-border rounded-lg p-4">
+                {editableText(`stat${n}`, "h2", "text-2xl font-bold mb-1")}
+                {editableText(`label${n}`, "p", "text-[10px] text-muted-foreground")}
+              </div>
+            ))}
+          </div>
+        );
+      case "pricing":
+        return (
+          <div style={baseStyle} className="grid grid-cols-3 gap-3 rounded">
+            {["1", "2", "3"].map((n) => (
+              <div key={n} className={`border rounded-lg p-4 text-center ${n === "2" ? "border-primary bg-primary/5 scale-105" : "border-border bg-secondary/20"}`}>
+                {editableText(`plan${n}`, "h3", "text-sm font-bold mb-1")}
+                {editableText(`price${n}`, "p", "text-xl font-bold mb-2")}
+                <span className="text-[9px] text-muted-foreground">/Monat</span>
+                <div className="mt-3 px-3 py-1.5 rounded text-[10px] font-semibold" style={{ backgroundColor: styles.primaryColor, color: "#fff" }}>
+                  Wählen
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      case "faq":
+        return (
+          <div style={{ ...baseStyle, color: styles.textColor }} className="rounded space-y-2">
+            <h3 className="text-sm font-bold mb-2">Häufige Fragen</h3>
+            {["1", "2", "3"].map((n) => (
+              <div key={n} className="bg-secondary/20 border border-border rounded-lg p-3">
+                {editableText(`q${n}`, "h3", "text-xs font-semibold mb-1")}
+                {editableText(`a${n}`, "p", "text-[11px] opacity-70")}
+              </div>
+            ))}
+          </div>
+        );
+      case "team":
+        return (
+          <div style={baseStyle} className="grid grid-cols-3 gap-3 rounded">
+            {["1", "2", "3"].map((n) => (
+              <div key={n} className="bg-secondary/20 border border-border rounded-lg p-4 text-center">
+                <div className="w-12 h-12 rounded-full bg-primary/20 mx-auto mb-2 flex items-center justify-center text-lg">👤</div>
+                {editableText(`member${n}`, "h3", "text-xs font-bold")}
+                {editableText(`role${n}`, "p", "text-[10px] text-muted-foreground")}
+              </div>
+            ))}
+          </div>
+        );
+      case "cta-banner":
+        return (
+          <div style={{ ...baseStyle, background: `linear-gradient(135deg, ${styles.primaryColor}, ${styles.secondaryColor})`, color: "#fff" }} className="text-center rounded py-8">
+            {editableText("heading", "h2", "text-lg font-bold mb-1")}
+            {editableText("subheading", "p", "text-xs opacity-80 mb-3")}
+            {editableText("cta", "button", "inline-block px-4 py-2 bg-white/20 rounded-lg text-sm font-semibold hover:bg-white/30")}
+          </div>
+        );
+      case "divider":
+        return (
+          <div style={{ padding: "0.5rem" }}>
+            <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${styles.primaryColor}, transparent)` }} />
+          </div>
+        );
+      case "timeline":
+        return (
+          <div style={{ ...baseStyle, color: styles.textColor }} className="rounded">
+            <div className="flex items-start gap-4 justify-center">
+              {["1", "2", "3"].map((n, i) => (
+                <div key={n} className="flex-1 text-center relative">
+                  <div className="w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: styles.primaryColor }}>
+                    {n}
+                  </div>
+                  {editableText(`step${n}`, "h3", "text-xs font-bold mb-0.5")}
+                  {editableText(`desc${n}`, "p", "text-[10px] opacity-60")}
+                  {i < 2 && <div className="absolute top-4 -right-2 w-4 h-px bg-border" />}
+                </div>
+              ))}
+            </div>
           </div>
         );
       case "image-placeholder":
