@@ -54,6 +54,33 @@ const devModePrompts = [
       { title: "CSV Analyzer", prompt: "Erstelle einen CSV-Analyzer: Upload-Zone, Spalten-Statistiken, Daten-Preview, Filter-Builder, und Chart-Generator aus Spalten." },
       { title: "Survey Builder", prompt: "Entwickle einen Survey/Form-Builder: Drag-Drop Fragen-Typen, Logik-Branches, Preview-Mode, und Ergebnis-Statistiken-Mockup." },
     ]
+  },
+  {
+    category: "🤖 Machine Learning",
+    prompts: [
+      { title: "ML Pipeline Dashboard", prompt: "Erstelle ein Machine-Learning-Pipeline-Dashboard: Dataset-Upload, Feature-Auswahl mit Checkboxen, Model-Typ-Selector (Linear Regression, Decision Tree, Neural Network), Training-Progress-Bar, Metriken-Anzeige (Accuracy, F1, Loss), und Prediction-Interface." },
+      { title: "Neural Network Visualizer", prompt: "Baue einen Neural-Network-Visualizer: Layer-Konfiguration (Input, Hidden, Output), Neuronen-Anzahl pro Layer, Aktivierungsfunktionen-Auswahl, interaktive Netzwerk-Grafik mit Verbindungen, und Forward-Pass-Animation." },
+      { title: "Dataset Explorer", prompt: "Entwickle einen Dataset-Explorer: Daten-Upload, automatische Spaltentyp-Erkennung, Korrelationsmatrix-Heatmap, Verteilungs-Histogramme, Outlier-Detection, und Feature-Importance-Ranking." },
+      { title: "Prompt Engineering Lab", prompt: "Erstelle ein Prompt-Engineering-Lab: Prompt-Editor mit Variablen-Platzhaltern, Temperature/Top-P Slider, Side-by-Side Response-Vergleich, Prompt-Bibliothek, und A/B-Test Scoring." },
+    ]
+  },
+  {
+    category: "⚡ Automation",
+    prompts: [
+      { title: "Workflow Builder", prompt: "Baue einen visuellen Workflow-Builder: Node-basierter Editor mit Trigger-Nodes (Webhook, Schedule, Event), Action-Nodes (HTTP, Email, DB-Query), Conditional-Branches, Verbindungslinien zwischen Nodes, und Execution-Log." },
+      { title: "Cron Job Manager", prompt: "Erstelle einen Cron-Job-Manager: Cron-Expression-Builder mit visuellem Editor, Job-Liste mit Status (Active/Paused/Failed), nächste Ausführungszeit-Anzeige, Log-History, und Retry-Konfiguration." },
+      { title: "Web Scraper Studio", prompt: "Entwickle ein Web-Scraper-Studio: URL-Eingabe, CSS-Selector-Builder mit Preview-Highlighting, Daten-Mapping zu Spalten, Schedule-Konfiguration, Export als JSON/CSV, und Run-History." },
+      { title: "Task Automation Hub", prompt: "Baue einen Task-Automation-Hub: Trigger-Auswahl (Datei-Änderung, API-Call, Zeitplan), Multi-Step-Actions mit Drag-Drop Reihenfolge, Variable-Mapping zwischen Steps, Error-Handling-Config, und Dashboard mit Erfolgsrate." },
+    ]
+  },
+  {
+    category: "🗄️ Datenbank-Tools",
+    prompts: [
+      { title: "SQL Query Builder", prompt: "Erstelle einen visuellen SQL-Query-Builder: Tabellen-Auswahl per Dropdown, JOIN-Builder mit Drag-Drop, WHERE-Condition-Builder, GROUP-BY und ORDER-BY Konfiguration, Live-SQL-Preview, und Ergebnis-Tabelle mit Pagination." },
+      { title: "DB Schema Designer", prompt: "Baue einen Datenbank-Schema-Designer: Tabellen erstellen mit Drag-Drop, Spalten-Editor (Name, Typ, Constraints), Relationen-Linien zwischen Tabellen ziehen, Auto-Generate SQL-DDL, und ERD-Export als Bild." },
+      { title: "Migration Manager", prompt: "Entwickle einen Migration-Manager: Migration-Liste mit Versionen und Status, SQL-Editor für Up/Down Migrations, Diff-View zwischen Versionen, Rollback-Button, und Dependency-Graph." },
+      { title: "Data Seeder", prompt: "Erstelle einen Data-Seeder: Tabellen-Auswahl, Spaltenweise Fake-Daten-Konfiguration (Name, Email, Datum, Number-Range), Anzahl-Slider, Preview der generierten Daten, und Export als SQL-Insert oder JSON." },
+    ]
   }
 ];
 
