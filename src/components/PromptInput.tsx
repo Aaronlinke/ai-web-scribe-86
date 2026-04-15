@@ -90,6 +90,15 @@ const devModePrompts = [
       { title: "API Gateway Dashboard", prompt: "Entwickle ein API-Gateway-Dashboard: Route-Konfiguration mit Path-Matching, Rate-Limiting-Settings pro Endpoint, API-Key-Verwaltung (erstellen, widerrufen), Request/Response-Transformation-Rules, und Echtzeit-Traffic-Monitor mit Latenz-Graphen." },
       { title: "OAuth Flow Designer", prompt: "Erstelle einen OAuth-Flow-Designer: Provider-Auswahl (Google, GitHub, Discord), Scope-Konfiguration mit Checkboxen, Redirect-URI-Builder, Token-Lifecycle-Visualisierung (Auth Code → Access Token → Refresh), und Test-Login-Button mit Token-Inspector." },
     ]
+  },
+  {
+    category: "🛡️ Security & Pentesting",
+    prompts: [
+      { title: "Vulnerability Scanner UI", prompt: "Erstelle eine Vulnerability-Scanner-Oberfläche: Ziel-URL/IP-Eingabe, Scan-Typ-Auswahl (Port Scan, Header Analysis, SSL Check, Directory Bruteforce), Progress-Anzeige, Findings-Liste mit Severity-Badges (Critical/High/Medium/Low), und Export als PDF-Report." },
+      { title: "Password Security Toolkit", prompt: "Baue ein Password-Security-Toolkit: Passwort-Stärke-Analyzer mit Echtzeit-Score, Entropy-Berechnung, Hash-Generator (MD5, SHA-256, bcrypt), Hash-Lookup-Interface, Passwort-Generator mit Optionen (Länge, Sonderzeichen, Wortliste), und Breach-Check-Simulation." },
+      { title: "Network Analyzer Dashboard", prompt: "Entwickle ein Network-Analyzer-Dashboard: Host-Discovery-Liste, Port-Status-Tabelle (Open/Closed/Filtered), Service-Detection-Ergebnisse, Traceroute-Visualisierung als Netzwerk-Graph, Latenz-Monitoring, und Packet-Capture-Log-Viewer." },
+      { title: "Security Headers Checker", prompt: "Erstelle einen Security-Headers-Checker: URL-Eingabe, automatische Prüfung aller relevanten Headers (CSP, HSTS, X-Frame-Options, X-XSS-Protection, Referrer-Policy), Bewertung pro Header (Pass/Warn/Fail), Gesamt-Score mit Note A-F, und Empfehlungs-Panel mit korrekten Header-Werten zum Kopieren." },
+    ]
   }
 ];
 
