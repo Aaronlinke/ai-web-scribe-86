@@ -82,6 +82,15 @@ const devModePrompts = [
       { title: "Data Seeder", prompt: "Erstelle einen Data-Seeder: Tabellen-Auswahl, Spaltenweise Fake-Daten-Konfiguration (Name, Email, Datum, Number-Range), Anzahl-Slider, Preview der generierten Daten, und Export als SQL-Insert oder JSON." },
     ]
   }
+  {
+    category: "🔗 API & Webhooks",
+    prompts: [
+      { title: "REST API Builder", prompt: "Erstelle einen REST-API-Builder: Endpoint-Definition mit Method/Path/Description, Request/Response-Body-Schema-Editor (JSON), Auth-Typ-Auswahl (Bearer, API-Key, OAuth), Auto-generierte Dokumentation im OpenAPI-Stil, und Try-It-Out Panel." },
+      { title: "Webhook Manager", prompt: "Baue einen Webhook-Manager: Webhook-URL-Generator, Event-Typ-Auswahl (POST/PUT/DELETE), Payload-Template-Editor, Retry-Konfiguration (Attempts, Backoff), Delivery-Log mit Status-Codes, und Test-Button mit Response-Preview." },
+      { title: "API Gateway Dashboard", prompt: "Entwickle ein API-Gateway-Dashboard: Route-Konfiguration mit Path-Matching, Rate-Limiting-Settings pro Endpoint, API-Key-Verwaltung (erstellen, widerrufen), Request/Response-Transformation-Rules, und Echtzeit-Traffic-Monitor mit Latenz-Graphen." },
+      { title: "OAuth Flow Designer", prompt: "Erstelle einen OAuth-Flow-Designer: Provider-Auswahl (Google, GitHub, Discord), Scope-Konfiguration mit Checkboxen, Redirect-URI-Builder, Token-Lifecycle-Visualisierung (Auth Code → Access Token → Refresh), und Test-Login-Button mit Token-Inspector." },
+    ]
+  }
 ];
 
 const PromptInput = ({ onGenerate, isLoading }: PromptInputProps) => {
