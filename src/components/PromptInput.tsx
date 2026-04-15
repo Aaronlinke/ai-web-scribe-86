@@ -81,7 +81,7 @@ const devModePrompts = [
       { title: "Migration Manager", prompt: "Entwickle einen Migration-Manager: Migration-Liste mit Versionen und Status, SQL-Editor für Up/Down Migrations, Diff-View zwischen Versionen, Rollback-Button, und Dependency-Graph." },
       { title: "Data Seeder", prompt: "Erstelle einen Data-Seeder: Tabellen-Auswahl, Spaltenweise Fake-Daten-Konfiguration (Name, Email, Datum, Number-Range), Anzahl-Slider, Preview der generierten Daten, und Export als SQL-Insert oder JSON." },
     ]
-  }
+  },
   {
     category: "🔗 API & Webhooks",
     prompts: [
