@@ -99,6 +99,16 @@ const devModePrompts = [
       { title: "Network Analyzer Dashboard", prompt: "Entwickle ein Network-Analyzer-Dashboard: Host-Discovery-Liste, Port-Status-Tabelle (Open/Closed/Filtered), Service-Detection-Ergebnisse, Traceroute-Visualisierung als Netzwerk-Graph, Latenz-Monitoring, und Packet-Capture-Log-Viewer." },
       { title: "Security Headers Checker", prompt: "Erstelle einen Security-Headers-Checker: URL-Eingabe, automatische Prüfung aller relevanten Headers (CSP, HSTS, X-Frame-Options, X-XSS-Protection, Referrer-Policy), Bewertung pro Header (Pass/Warn/Fail), Gesamt-Score mit Note A-F, und Empfehlungs-Panel mit korrekten Header-Werten zum Kopieren." },
     ]
+  },
+  {
+    category: "🚀 DevOps & CI/CD",
+    prompts: [
+      { title: "CI/CD Pipeline Builder", prompt: "Erstelle einen visuellen CI/CD-Pipeline-Builder: Stages-Editor (Build, Test, Deploy) mit Drag-Drop-Reihenfolge, Job-Konfiguration pro Stage (Docker-Image, Commands, Env-Vars), Trigger-Settings (Push, PR, Tag, Schedule), Artifact-Management, Parallel/Sequential-Execution-Toggle, Live-Pipeline-Run-Visualisierung mit Status pro Job, und YAML-Export (GitHub Actions/GitLab CI Format)." },
+      { title: "Docker Container Manager", prompt: "Baue ein Docker-Container-Management-Dashboard: Container-Liste mit Status (Running/Stopped/Exited), Resource-Usage-Graphen (CPU, RAM, Network, Disk), Image-Registry-Browser, Dockerfile-Editor mit Syntax-Highlighting, Container-Logs-Viewer mit Filter, Start/Stop/Restart-Controls, Volume- und Network-Management, und Compose-File-Generator." },
+      { title: "Kubernetes Dashboard", prompt: "Entwickle ein Kubernetes-Cluster-Dashboard: Pod-Liste mit Namespaces-Filter, Deployment-Status (Replicas, Ready, Available), Service- und Ingress-Übersicht, ConfigMap/Secret-Editor, Pod-Logs-Streaming, Resource-Usage pro Node, Scaling-Controls (Manual/HPA), Rolling-Update-Visualisierung, und kubectl-Command-Generator." },
+      { title: "Deployment Tracker", prompt: "Erstelle einen Deployment-Tracker: Environment-Übersicht (Dev/Staging/Prod) mit aktueller Version pro Service, Deployment-History-Timeline mit Commit-Hashes, Rollback-Buttons mit One-Click-Revert, Health-Check-Status pro Service, Performance-Metriken vor/nach Deployment-Vergleich, Approval-Workflow für Prod-Releases, und Slack/Discord-Notification-Settings." },
+      { title: "Infrastructure as Code Editor", prompt: "Baue einen IaC-Editor: Terraform/Pulumi-Code-Editor mit Syntax-Highlighting, Resource-Visualisierung als Graph (VPC, Subnets, EC2, RDS), Plan-Preview mit Changes (Add/Modify/Destroy), State-File-Browser, Module-Library mit vorgefertigten Templates, Cost-Estimation pro Resource, und Apply-Button mit Confirmation-Dialog." },
+    ]
   }
 ];
 
