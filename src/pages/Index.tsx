@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { Code2, Eye, Zap, Download, ExternalLink, AlertTriangle, FolderOpen, Sparkles, Blocks, RefreshCw } from "lucide-react";
+import { Code2, Eye, Zap, Download, ExternalLink, AlertTriangle, FolderOpen, Sparkles, Blocks, RefreshCw, Terminal } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PromptInput from "@/components/PromptInput";
@@ -401,6 +402,16 @@ ${bodyContents || '  <div class="fusion-empty">Keine HTML-Inhalte gefunden</div>
               <p className="text-[10px] text-muted-foreground">ULTRA MODUS • HTML • CSS • JS</p>
             </div>
           </div>
+
+          <div className="flex items-center gap-2">
+            <Link to="/termux">
+              <Button variant="outline" size="sm" className="gap-1.5 h-8 border-primary/30 text-primary hover:bg-primary/10">
+                <Terminal className="w-4 h-4" />
+                <span className="hidden sm:inline">Termux</span>
+              </Button>
+            </Link>
+          </div>
+
 
           {selectedFile && (
             <div className="flex items-center gap-2">
